@@ -1,0 +1,812 @@
+<html>
+
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<SCRIPT SRC="../writeMailTo.js"></SCRIPT>
+<script LANGUAGE="JavaScript">
+<!--
+//Detect browsers other than Netscape
+var message = "---------------------WARNING---------------------\n\n" +
+              "This browser may not be able to send\n" +
+              "this form because it is sent via e-mail.\n" +
+              "One can either e-mail me directly\n" +
+              "or cut and paste the results of this form\n" +
+              "into an E-mail message.\n\n " +
+              "Note: Internet Explorer will open an\n" +
+              "empty e-mail message upon submission\n" +
+              "Also Explorer users should atleast\n" +
+              "-----PICK YOUR FAVORITE COLORS------";
+var micro= "thebigbluehouse" + "@" + "earth" + "link.net";
+if (navigator.appName != "Netscape") {
+	alert(message)
+	micro = "<h5>Remember to highlight the message and then use <br><b>[CTRL]+C</b> to copy it and paste it with <b>[CRTL] + V</b>.<br>And be aware that the E-mail window may appear infront of everthything</h5>";
+	/// the button for submision micro
+	}
+
+//functions for background and foreground colors
+function pickBack(form)        {
+        var sWhichSelect = form.background.selectedIndex
+        var sThisColor = form.background.options[sWhichSelect].text
+        form.background.blur()
+        document.bgColor = sThisColor
+}
+function pickFore(form)        {
+        var sWhichSelect = form.foreground.selectedIndex
+        var foreground = form.foreground.options[sWhichSelect].text
+        form.foreground.blur()
+        document.fgColor = foreground
+}
+
+//Function for the form
+function process(myform){
+// get sex
+var sex;
+var s_he;
+	if (myform.sex[0].checked) {sex = "She"; s_he = "Her"; sexl = "she";}
+	else{sex = "He"; s_he = "His"; sexl = "he";}
+
+//get values of simple variables
+var comments = myform.comments.value;
+	if (comments=="") {comments = sex + " has no comments or suggestions."}
+var hello = myform.hello.value;
+	if (hello=="") {hello = "Mystery Guest"};
+var email = myform.email.value;
+var age = myform.age.value + "";
+	if (age=="") {age = ", who knows how many,"};
+var city = myform.city.value;
+	if (city==""){city="Brooklyn"};
+
+// Single Select Form Fields
+var country ="";
+	country += myform.country.options[myform.country.selectedIndex].text;
+var state = "";
+	state += myform.state.options[myform.state.selectedIndex].text;
+var modem = "";
+	modem += myform.modem.options[myform.modem.selectedIndex].text;
+var referred="";
+	referred += myform.referred.options[myform.referred.selectedIndex].text;
+var background;
+	background = myform.background.options[myform.background.selectedIndex].text;
+var foreground;
+	foreground = myform.foreground.options[myform.foreground.selectedIndex].text;
+
+//concatenate sentence for most and least liked pages
+var resolution = "";
+	resolution += myform.resolution.options[myform.resolution.selectedIndex].text;
+var most = "";
+	most += myform.most.options[myform.most.selectedIndex].text;
+		if(most=="None"){most="";}
+		else{most = sex + " likes the web page titled, " + most + ". "};
+var least = "";
+	least += myform.least.options[myform.least.selectedIndex].text;
+		if(least=="None"){least="";}
+		else{least = sex + " dislike the web page titled, " + least + ". "};
+
+//add proper adjective to occupation
+var occupation = "";
+	occupation += myform.occupation.options[myform.occupation.selectedIndex].text;
+		if((occupation.charAt(0)=="a")||(occupation.charAt(0)=="e")||(occupation.charAt(0)=="i")||(occupation.charAt(0)=="o")||(occupation.charAt(0)=="u")){
+			occupation = "an " + occupation + ". "}
+		else{occupation = "a " + occupation + ". "}
+
+// get browser
+var browser = navigator.appName + " " + navigator.appVersion;
+
+// get today's date
+var time;
+	time = new Date()
+	time = time.toLocaleString();
+
+// get number of interests
+numberofInterests =0;
+	for (var n=0; n<myform.interests.length;n++ ){
+		if (myform.interests.options[n].selected == true){numberofInterests = numberofInterests + 1}
+
+	}
+// make a conjuntion their interests
+var interests="";
+var t=0;
+if (numberofInterests ==0) {interests = " are none."}				//get out of here now because they didn't pick anything
+else {
+	if (numberofInterests ==1) {										//looking if only one interest
+		for (var d=0; d<myform.interests.length; d++) {
+		if (myform.interests.options[d].selected == true){interests =" is " + myform.interests.options[d].text + ".";}
+		}
+	}
+	else{																		//concatenate multiple interests
+		for (var i=0; i<myform.interests.length; i++) {
+			if (myform.interests.options[i].selected == true) {
+				t++;
+				if(t==numberofInterests){
+					interests += "and " + myform.interests.options[i].text + ". "}
+				else{
+					if (t==1){interests += "s are " + myform.interests.options[i].text + ", "}
+					else {interests += myform.interests.options[i].text + ", "}
+	  				}
+	  			}
+	  		}
+		}
+	}
+
+//text plain message that is sent via e-mail
+var send = "\rThis is " + hello + " s E-mail to Jake\r";
+send += "at " + time + " (their time).\r";
+send += hello + " is " + age + " years old\r";
+send += sex + " resides in " + country + " in good old " + city + ", " + state + ".\r";
+send += sex + " works as " + occupation + "\r";
+send += s_he + " interest" + interests + "\r";
+send += most + least + "\r";
+send += s_he + " suggestions and comments are\r";
+send += comments + "\r\r";
+send += hello + " is using  " + browser + "\r";
+send += "with a " + modem + " modem on a " + resolution + " monitor\r" + email + "\r";
+send += hello + " choose " + background + " for the background and " + foreground + " for the foreground.";
+
+//remove quotation marks for text/plain format
+for (var q=0; q<send.length; q++) {
+	var DQUOTE = '\"';
+	var SQUOTE = "\'";
+	var character=send.charAt(q);
+	var newCharacter;
+	if ((character==SQUOTE)||(character==DQUOTE)){character=" "};
+	newCharacter= character;
+	var newsend;
+	newsend += newCharacter;
+	}
+
+//make newsend back into send
+send = newsend;
+////////////////RUN THIS TO SEE UNDEFINED BUG IN TEXT/PLAIN
+//window.alert(send)
+
+//concatenate HTML document
+var m = "";
+
+m += "<HTML><head><title>" + hello + "s E-mail to Jake</title></head><body bgcolor='" + background + "' text='" + foreground + "'><div align='center'><center>";
+m += "<table border='0' width='500' cellspacing='0' cellpadding='5' bgcolor='" + background + "'><tr>";
+m += "<td width='50' rowspan='6' bgcolor='" + foreground + "'>&nbsp</td>";
+m += "<td width='400' height='50' valign='middle' align='center' bgcolor='" + foreground + "'>";
+m += "<font color='" + background + "'>" + hello + " s E-mail to Jake<br> at " + time + "</font></td>";
+m += "<td width='50' rowspan='6' bgcolor='" + foreground + "'>&nbsp</td></tr>";
+m += "<tr><td width='400'>" + hello + " is " + age + " years old. " + sex + " resides in " + country + " in good old " + city + ", " + state + ". ";
+m += sex + " works as " + occupation + ". " +  s_he + " interest" + interests + "</td></tr>";
+m += "<tr><td width='400'>" +  most + least + "</td></tr>";
+m += "<tr><td width='400'>" + sex + " suggestions and comments are:<br>" + comments + "</td></tr>";
+m += "<tr><td width='400'>" + hello + " is using " + browser + " with a " + modem + " modem on a " + resolution + " monitor.<br>" + email + "</td></tr>";
+m += "<tr><td width='400' height='50' valign='middle' align='center' bgcolor='" + foreground + "'>";
+m += "<form action='mailto:" + "thebigbluehouse" + "@" + "earth" + "link.net' method='post' enctype='text/plain' name='mail'>";
+m += "<input type=hidden name=letter value='" + send + "'>";
+m += "<input type='submit' name='Jake' value=' SEND ' onclick='opener.MailNow(this.form)'> <br>";////////////
+m += "<input type='button' value='CHANGE' name='change' onclick='self.close()'></p>";
+m += "</form></td></tr></table>" + micro + "</center></div></body></html>";
+
+//open new window with HTML document
+Win1 = open("","Second_Window","resize=no,height=400,width=550,scrollbars=yes");
+	Win1.document.write(m)
+	Win1.document.close()
+}
+
+//function to submit email
+function MailNow(mail){
+	mail.submit()
+	history.back()
+}
+
+//-->
+</script>
+
+<title>Form to Generate an E-mail to Jake.</title>
+
+<meta name="Microsoft Border" content="none"></head>
+<script LANGUAGE="JavaScript">
+<!--
+if (navigator.appName=="Microsoft Internet Explorer"){document.write("<body bgcolor='lightgrey' background='formback.gif' bgproperties='fixed'>")}
+else {document.write("<body bgcolor='lightgrey'>")}
+//-->
+</script>
+
+<SCRIPT>
+document.write('<form name="jake" method="POST" action="mail' + 'to:' + 'thebigbluehouse' + '@' + 'earth' + 'link.net" enctype="text/plain">')
+</SCRIPT>
+  <div align="center"><center><table border="0" width="100%" cellspacing="0" cellpadding="0" ALIGN="CENTER">
+    <tr>
+      <td width="600" align="center"><div align="center"><center><table border="0" width="600" cellspacing="0" cellpadding="25" ALIGN="CENTER">
+        <tr>
+          <td width="100%"><table border="0" cellspacing="0" height="100" cellpadding="0" width="550">
+            <tr>
+              <td width="100"><img src="../images/formhouse.jpg" alt="formhouse.jpg (4851 bytes)" WIDTH="100" HEIGHT="100"></td>
+              <td align="center" width="350" bgcolor="#FFFFFF"><font size="6">J</font><strong><font size="5">AKE'S</font></strong><font size="6"> B</font><font size="5"><strong>ODEGA<br>
+              </strong></font><font size="1">This form is sent using E-mail<br>
+              You can skip the form and just send an email to<br>
+              <SCRIPT>writeMailTo('thebigbluehouse', 'earthlink.net')</SCRIPT></font></td>
+              <td width="100"><img src="../images/formhouse.jpg" alt="formhouse.jpg (4851 bytes)" WIDTH="100" HEIGHT="100"></td>
+            </tr>
+          </table>
+          </td>
+        </tr>
+        <tr>
+          <td width="100%"><div align="center"><center><table border="0" width="550" cellspacing="10" cellpadding="2">
+            <tr>
+              <td width="100%" colspan="2" align="center" bgcolor="#FFFFFF"><font size="5">Y</font><strong>OUR</strong>
+              <font size="5">I</font><strong>NFORMATION</strong></td>
+            </tr>
+            <tr>
+              <td width="150" align="center" bgcolor="#FFFFFF" valign="middle">Name</td>
+              <td valign="middle"><input type="text" name="hello" size="37"></td>
+            </tr>
+            <tr>
+              <td width="150" align="center" bgcolor="#FFFFFF" valign="middle">E-mail </td>
+              <td valign="middle"><input type="text" name="email" size="37"></td>
+            </tr>
+            <tr>
+              <td width="100%" colspan="2"><table border="0" width="100%" cellspacing="10" cellpadding="5">
+                <tr>
+                  <td width="50%" align="center" valign="middle" bgcolor="#FFFFFF">Age<input type="text" name="age" size="3"></td>
+                  <td width="50%" align="center" bgcolor="#FFFFFF">Sex<big>&nbsp;</big> <input type="radio" value="female" checked name="sex">female <input type="radio" name="sex" value="male">male</td>
+                </tr>
+              </table>
+              </td>
+            </tr>
+            <tr>
+              <td width="100%" colspan="2"><table border="0" width="100%" cellspacing="10" cellpadding="5">
+                <tr>
+                  <td width="33%" align="center" bgcolor="#FFFFFF">Country</td>
+                  <td width="33%" align="center" bgcolor="#FFFFFF">State</td>
+                  <td width="34%" align="center" bgcolor="#FFFFFF">City</td>
+                </tr>
+                <tr>
+                  <td width="33%" align="center"><select name="country" size="1">
+                    <option>Africa
+                    <option>Australia
+                    <option>Central America
+                    <option>Eastern Asia
+                    <option>Eastern Europe
+                    <option>Middle East
+                    <option>Northern Asia
+                    <option selected>North America
+                    <option>Pacific Rim
+                    <option>South America
+                    <option>Western Europe
+                    <option>Other
+                  </select></td>
+                  <td width="34%" align="center"><select name="state" size="1">
+                    <option>Alabama
+                    <option>Alaska
+                    <option>Arizona
+                    <option>Arkansas
+                    <option>California
+                    <option>Colorado
+                    <option>Connecticut
+                    <option>Delaware
+                    <option>Florida
+                    <option>Georgia
+                    <option>Hawaii
+                    <option>Idaho
+                    <option>Illinois
+                    <option>Indiana
+                    <option>Iowa
+                    <option>Kansas
+                    <option>Kentucky
+                    <option>Louisiana
+                    <option>Maine
+                    <option>Maryland
+                    <option>Massachusetts
+                    <option>Michigan
+                    <option>Minnesota
+                    <option>Mississippi
+                    <option>Missouri
+                    <option>Montana
+                    <option>Nebraska
+                    <option>Nevada
+                    <option>New Hampshire
+                    <option>New Jersey
+                    <option>New Mexico
+                    <option selected>New York
+                    <option>North Carolina
+                    <option>North Dakota
+                    <option>Ohio
+                    <option>Oklahoma
+                    <option>Oregon
+                    <option>Pennsylvania
+                    <option>Rhode Island
+                    <option>South Carolina
+                    <option>South Dakota
+                    <option>Tennessee
+                    <option>Texas
+                    <option>Utah
+                    <option>Vermont
+                    <option>Virginia
+                    <option>Washington
+                    <option>West Virginia
+                    <option>Wisconsin
+                    <option>Wyoming
+                  </select></td>
+                  <td width="33%" align="center"><input type="text" name="city" size="12"></td>
+                </tr>
+              </table>
+              </td>
+            </tr>
+            <tr>
+              <td width="100%" colspan="2"><table border="0" width="100%" cellspacing="10" cellpadding="5">
+                <tr>
+                  <td width="50%" align="center" bgcolor="#FFFFFF">Occupation<br>
+                  <small>Select only one</small><br>
+                  </td>
+                  <td width="50%" align="center" bgcolor="#FFFFFF">Hobbies/Interests<br>
+                  <small>Select more then one by holding <strong>[Ctrl]</strong></small></td>
+                </tr>
+                <tr>
+                  <td width="50%" align="center"><select name="occupation" size="5">
+                    <option>architect
+                    <option selected>artist
+                    <option>actor
+                    <option>business person
+                    <option>city worker
+                    <option>craftsperson
+                    <option>doctor
+                    <option>engineer
+                    <option>musician
+                    <option>photographer
+                    <option>salesman
+                    <option>student
+                    <option>sports person
+                    <option>teacher
+                    <option>technician
+                    <option>other
+                    <option>it is a secret
+                  </select></td>
+                  <td width="50%" align="center"><select name="interests" size="5" multiple>
+                    <option>art
+                    <option>architecture
+                    <option>comics
+                    <option>chatting
+                    <option>computer gaming
+                    <option>computers
+                    <option>crafts
+                    <option>dance
+                    <option>daydreaming
+                    <option>film
+                    <option>gossip
+                    <option>hiking
+                    <option>history
+                    <option>literature
+                    <option>music
+                    <option>poetry
+                    <option>sports
+                    <option>theater
+                    <option>travel
+                  </select></td>
+                </tr>
+              </table>
+              </td>
+            </tr>
+            <tr>
+              <td width="100%" colspan="2"><table border="0" width="100%" cellspacing="10" cellpadding="5">
+                <tr>
+                  <td width="100%" colspan="2" align="center" bgcolor="#FFFFFF">Favorite Colors</td>
+                </tr>
+                <tr>
+                  <td width="50%" align="center" bgcolor="#FFFFFF">1st Choice</td>
+                  <td width="50%" align="center" bgcolor="#FFFFFF">2nd Choice</td>
+                </tr>
+                <tr>
+                  <td width="50%" align="center"><select name="background" size="1" onchange="pickBack(this.form)">
+                    <option>aliceblue
+                    <option>antiquewhite
+                    <option>aqua
+                    <option>aquamarine
+                    <option>azure
+                    <option>beige
+                    <option>bisque
+                    <option>black
+                    <option>blanchedalmond
+                    <option>blueviolet
+                    <option>brown
+                    <option>burlywood
+                    <option>cadetblue
+                    <option>chartreuse
+                    <option>chocolate
+                    <option>coral
+                    <option>cornflowerblue
+                    <option>cornsilk
+                    <option>crimson
+                    <option>cyan
+                    <option>darkblue
+                    <option>darkcyan
+                    <option>darkgoldenrod
+                    <option>darkgray
+                    <option>darkgreen
+                    <option>darkkhaki
+                    <option>darkmagenta
+                    <option>darkolivegreen
+                    <option>darkorange
+                    <option>darkorchid
+                    <option>darkred
+                    <option>darksalmon
+                    <option>darkseagreen
+                    <option>darkslateblue
+                    <option>darkslategray
+                    <option>darkturquoise
+                    <option>darkviolet
+                    <option>deeppink
+                    <option>deepskyblue
+                    <option>dimgray
+                    <option>dodgerblue
+                    <option>firebrick
+                    <option>floralwhite
+                    <option>forestgreen
+                    <option>fuchsia
+                    <option>gainsboro
+                    <option>ghostwhite
+                    <option>gold
+                    <option>goldenrod
+                    <option>gray
+                    <option>green
+                    <option>greenyellow
+                    <option>honeydew
+                    <option>hotpink
+                    <option>indianred
+                    <option>indigo
+                    <option>ivory
+                    <option>khaki
+                    <option>lavender
+                    <option>lavenderblush
+                    <option>lawngreen
+                    <option>lemonchiffon
+                    <option>lightblue
+                    <option>lightcoral
+                    <option>lightcyan
+                    <option>lightgoldenrodyellow
+                    <option>lightgreen
+                    <option>lightgrey
+                    <option>lightpink
+                    <option>lightsalmon
+                    <option>lightseagreen
+                    <option>lightskyblue
+                    <option>lightslategray
+                    <option>lightsteelblue
+                    <option>lightyellow
+                    <option>lime
+                    <option>limegreen
+                    <option>linen
+                    <option>magenta
+                    <option>mediumaquamarine
+                    <option>mediumblue
+                    <option>mediumorchid
+                    <option>mediumpurple
+                    <option>mediumseagreen
+                    <option>mediumslateblue
+                    <option>mediumspringgreen
+                    <option>mediumturquoise
+                    <option>mediumvioletred
+                    <option>midnightblue
+                    <option>mintcream
+                    <option>mistyrose
+                    <option>moccasin
+                    <option>navajowhite
+                    <option>navy
+                    <option>oldlace
+                    <option>olive
+                    <option>olivedrab
+                    <option>orange
+                    <option>orangered
+                    <option>orchid
+                    <option>palegoldenrod
+                    <option>palegreen
+                    <option>paleturquoise
+                    <option>palevioletred
+                    <option>papayawhip
+                    <option>peachpuff
+                    <option>peru
+                    <option>pink
+                    <option>plum
+                    <option>powderblue
+                    <option>purple
+                    <option>red
+                    <option>rosybrown
+                    <option>royalblue
+                    <option>saddlebrown
+                    <option>salmon
+                    <option>sandybrown
+                    <option>seagreen
+                    <option>seashell
+                    <option>sienna
+                    <option>silver
+                    <option>skyblue
+                    <option>slateblue
+                    <option>slategray
+                    <option>snow
+                    <option>springgreen
+                    <option>steelblue
+                    <option>tan
+                    <option>teal
+                    <option>thistle
+                    <option>tomato
+                    <option>turquoise
+                    <option>violet
+                    <option>wheat
+                    <option selected>white
+                    <option>whitesmoke
+                    <option>yellow
+                    <option>yellowgreen
+                  </select></td>
+                  <td width="50%" align="center"><select name="foreground" size="1" onchange="pickFore(this.form)">
+                    <option>aliceblue
+                    <option>antiquewhite
+                    <option>aqua
+                    <option>aquamarine
+                    <option>azure
+                    <option>beige
+                    <option>bisque
+                    <option selected>black
+                    <option>blanchedalmond
+                    <option>blueviolet
+                    <option>brown
+                    <option>burlywood
+                    <option>cadetblue
+                    <option>chartreuse
+                    <option>chocolate
+                    <option>coral
+                    <option>cornflowerblue
+                    <option>cornsilk
+                    <option>crimson
+                    <option>cyan
+                    <option>darkblue
+                    <option>darkcyan
+                    <option>darkgoldenrod
+                    <option>darkgray
+                    <option>darkgreen
+                    <option>darkkhaki
+                    <option>darkmagenta
+                    <option>darkolivegreen
+                    <option>darkorange
+                    <option>darkorchid
+                    <option>darkred
+                    <option>darksalmon
+                    <option>darkseagreen
+                    <option>darkslateblue
+                    <option>darkslategray
+                    <option>darkturquoise
+                    <option>darkviolet
+                    <option>deeppink
+                    <option>deepskyblue
+                    <option>dimgray
+                    <option>dodgerblue
+                    <option>firebrick
+                    <option>floralwhite
+                    <option>forestgreen
+                    <option>fuchsia
+                    <option>gainsboro
+                    <option>ghostwhite
+                    <option>gold
+                    <option>goldenrod
+                    <option>gray
+                    <option>green
+                    <option>greenyellow
+                    <option>honeydew
+                    <option>hotpink
+                    <option>indianred
+                    <option>indigo
+                    <option>ivory
+                    <option>khaki
+                    <option>lavender
+                    <option>lavenderblush
+                    <option>lawngreen
+                    <option>lemonchiffon
+                    <option>lightblue
+                    <option>lightcoral
+                    <option>lightcyan
+                    <option>lightgoldenrodyellow
+                    <option>lightgreen
+                    <option>lightgrey
+                    <option>lightpink
+                    <option>lightsalmon
+                    <option>lightseagreen
+                    <option>lightskyblue
+                    <option>lightslategray
+                    <option>lightsteelblue
+                    <option>lightyellow
+                    <option>lime
+                    <option>limegreen
+                    <option>linen
+                    <option>magenta
+                    <option>mediumaquamarine
+                    <option>mediumblue
+                    <option>mediumorchid
+                    <option>mediumpurple
+                    <option>mediumseagreen
+                    <option>mediumslateblue
+                    <option>mediumspringgreen
+                    <option>mediumturquoise
+                    <option>mediumvioletred
+                    <option>midnightblue
+                    <option>mintcream
+                    <option>mistyrose
+                    <option>moccasin
+                    <option>navajowhite
+                    <option>navy
+                    <option>oldlace
+                    <option>olive
+                    <option>olivedrab
+                    <option>orange
+                    <option>orangered
+                    <option>orchid
+                    <option>palegoldenrod
+                    <option>palegreen
+                    <option>paleturquoise
+                    <option>palevioletred
+                    <option>papayawhip
+                    <option>peachpuff
+                    <option>peru
+                    <option>pink
+                    <option>plum
+                    <option>powderblue
+                    <option>purple
+                    <option>red
+                    <option>rosybrown
+                    <option>royalblue
+                    <option>saddlebrown
+                    <option>salmon
+                    <option>sandybrown
+                    <option>seagreen
+                    <option>seashell
+                    <option>sienna
+                    <option>silver
+                    <option>skyblue
+                    <option>slateblue
+                    <option>slategray
+                    <option>snow
+                    <option>springgreen
+                    <option>steelblue
+                    <option>tan
+                    <option>teal
+                    <option>thistle
+                    <option>tomato
+                    <option>turquoise
+                    <option>violet
+                    <option>wheat
+                    <option>white
+                    <option>whitesmoke
+                    <option>yellow
+                    <option>yellowgreen
+                  </select></td>
+                </tr>
+              </table>
+              </td>
+            </tr>
+          </table>
+          </center></div></td>
+        </tr>
+        <tr>
+          <td width="100%"><div align="center"><center><table border="0" width="550" cellspacing="0" cellpadding="5">
+            <tr>
+              <td width="520" align="center" bgcolor="#FFFFFF"><font size="5">Y</font><strong>OUR</strong>
+              <font size="5">C</font><strong>OMPUTER'S</strong> <font size="5">I</font><strong>NFORMATION</strong></td>
+            </tr>
+            <tr>
+              <td width="100%"><div align="center"><center><table border="0" cellspacing="10" cellpadding="5" ALIGN="CENTER">
+                <tr>
+                  <td width="425" colspan="2" align="center" bgcolor="#FFFFFF"><script LANGUAGE="JavaScript">
+<!--
+document.write(navigator.appName + navigator.appVersion)
+//-->
+</script>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="150" bgcolor="#FFFFFF">Modem's speed </td>
+                  <td width="275"><select name="modem" size="1">
+                    <option>14400 bps
+                    <option>19200 bps
+                    <option>28800 bps
+                    <option>33600 bps
+                    <option>56600 bps
+                  </select></td>
+                </tr>
+                <tr>
+                  <td width="150" bgcolor="#FFFFFF">Resoultion</td>
+                  <td width="275"><select NAME="resolution" SIZE="1">
+                    <option>1152 X 864
+                    <option>1024 X 768
+                    <option selected>800 X 600
+                    <option>640 X 480
+                  </select></td>
+                </tr>
+              </table>
+              </center></div></td>
+            </tr>
+          </table>
+          </center></div></td>
+        </tr>
+        <tr>
+          <td width="100%"><div align="center"><center><table border="0" width="550" cellspacing="0" cellpadding="5">
+            <tr>
+              <td align="center" bgcolor="#FFFFFF"><font size="5">H</font><strong>OMEPAGE</strong> <font size="5">Q</font><strong>UESTIONS</strong></td>
+            </tr>
+            <tr>
+              <td><div align="center"><center><table border="0" cellspacing="10" cellpadding="5">
+                <tr>
+                  <td width="150" bgcolor="#FFFFFF">Referred by</td>
+                  <td width="275"><select name="referred" size="1">
+                    <option selected>Jake
+                    <option>Altavista
+                    <option>Excite
+                    <option>HotBot
+                    <option>Lycos
+                    <option>WebCrawler
+                    <option>Yahoo
+                    <option>Someone's Web Page
+                    <option>A friend told me
+                    <option>Newsgroup
+                    <option>Publication
+                    <option>Other
+                  </select></td>
+                </tr>
+                <tr>
+                  <td width="150" bgcolor="#FFFFFF">Favorite Page</td>
+                  <td width="275"><select name="most" size="1">
+                    <option selected>None
+                    <option>Jake s Bodega
+                    <option>9th street
+                    <option>Bodegas
+                    <option>The Blue House
+                    <option>Cupola Sculpture
+                    <option>Manhattan Special
+                    <option>Computer Art
+                    <option>Interiors and Cityscapes
+                    <option>Martin and Me
+                    <option>Virtual Tour
+                    <option>Poetic Tour
+                    <option>Gina as a Mrs. Potato Head
+                    <option>Slope Music
+                  </select></td>
+                </tr>
+                <tr>
+                  <td width="150" bgcolor="#FFFFFF">Least Favorite </td>
+                  <td width="275"><select name="least" size="1">
+                    <option selected>None
+                    <option>Jake s Bodega
+                    <option>9th street
+                    <option>Bodegas
+                    <option>The Blue House
+                    <option>Cupola Sculpture
+                    <option>Manhattan Special
+                    <option>Computer Art
+                    <option>Interiors and Cityscapes
+                    <option>Martin and Me
+                    <option>Virtual Tour
+                    <option>Poetic Tour
+                    <option>Gina as a Mrs. Potato Head
+                    <option>Slope Music
+                  </select></td>
+                </tr>
+              </table>
+              </center></div></td>
+            </tr>
+            <tr>
+              <td align="center" bgcolor="#FFFFFF">Comments and Suggestions</td>
+            </tr>
+            <tr>
+              <td height="138" align="center"><textarea rows="6" name="comments" cols="50"></textarea></td>
+            </tr>
+          </table>
+          </center></div></td>
+        </tr>
+        <tr>
+          <td width="100%" valign="middle" align="center"><table border="0" width="100%" cellspacing="0" cellpadding="25">
+            <tr>
+              <td width="100%" align="center" bgcolor="#FFFFFF"><input type="button" value="PRESS HERE TO SEE YOUR LETTER " name="submit" onclick="process(this.form)"></td>
+            </tr>
+          </table>
+          </td>
+        </tr>
+      </table>
+      </center></div></td>
+    </tr>
+  </table>
+  </center></div>
+</form>
+</body>
+</html>

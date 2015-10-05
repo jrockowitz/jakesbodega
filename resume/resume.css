@@ -1,0 +1,54 @@
+BODY  {
+	margin-left : 10;
+	margin-right : 10;
+	margin-top : 10;
+	margin-bottom : 10;
+}
+
+TD, DIV, P  {
+	font-size : 10pt;
+	font-family : sans-serif;
+}
+
+P, .JobLocation  {
+	margin-left : 0;
+	margin-right : 0;
+	margin-top : 0;
+	margin-bottom : 5;
+}
+
+.Name, .SchoolName, .ProjectTitle, .SectionTitle,.Skillset  {
+	font-weight : bold;
+}
+
+.SectionTitle  {
+	font-size : 12pt;
+	padding-top : 10;
+}
+
+.JobTitle {
+	font-weight : bold;
+	font-style : italic;
+}
+
+.Job, .School, .ObjectiveDescription, .Skills{
+	margin-left : 0;
+	margin-right : 0;
+	margin-top : 10;
+	margin-bottom : 10;
+}
+
+.Project {
+	margin-left : 10;
+	margin-right : 25;
+	margin-top : 5;
+	margin-bottom : 5;
+}
+
+.ProjectDescription	{
+}
+
+.Dates  {
+	text-align : right;
+}
+
